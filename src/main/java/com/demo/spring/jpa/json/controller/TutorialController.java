@@ -43,7 +43,7 @@ public class TutorialController {
 	public ResponseEntity<List<Tutorial>> getAllTutorials(@RequestParam(required = false) String title) {
 		try {
 			List<Tutorial> tutorials = new ArrayList<Tutorial>();
-			LOGGER.info("record creation Started");
+			LOGGER.info("record retrieved");
 			if (title == null)
 				tutorialRepository.findAll().forEach(tutorials::add);
 				
@@ -77,7 +77,8 @@ public class TutorialController {
 		Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
 
 		if (tutorialData.isPresent()) {
-			LOGGER.info("Record retrieved Sucessfully", kv("HttpStatusCode", HttpStatus.OK.value()));
+			LOGGER.info("Record retrieved", kv("HttpStatusCode", HttpStatus.OK.value()));
+			LOGGER.info("Author name {} ", kv("author", tutorialData.get().getAuthor()));
 			return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
 		} else {
 			LOGGER.error("Record not found", kv("HttpStatusCode", HttpStatus.NOT_FOUND.value()));
@@ -93,8 +94,9 @@ public class TutorialController {
 			Tutorial _tutorial = tutorialRepository
 					.save(new Tutorial(tutorial.getTitle(), tutorial.getDescription(), false, tutorial.getAuthor(), tutorial.getCountry()));
 					LOGGER.info("Author from {}", kv("country", tutorial.getCountry()));
+					LOGGER.info("Author name {}", kv("author", tutorial.getAuthor()));
 
-			LOGGER.info("Record created Sucessfully", kv("HttpStatusCode", HttpStatus.CREATED.value()));
+			LOGGER.info("Record created", kv("HttpStatusCode", HttpStatus.CREATED.value()));
 			return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -112,6 +114,7 @@ public class TutorialController {
 			_tutorial.setPublished(tutorial.isPublished());
 			_tutorial.setAuthor(tutorial.getAuthor());
 			_tutorial.setCountry(tutorial.getCountry());
+			LOGGER.info("Record Updated for the given {}", kv("id", id));
 			return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -122,6 +125,7 @@ public class TutorialController {
 	public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") long id) {
 		try {
 			tutorialRepository.deleteById(id);
+			LOGGER.info("Record Deleted for the given {}", kv("id", id));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
