@@ -77,10 +77,11 @@ public class TutorialController {
 		Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
 
 		if (tutorialData.isPresent()) {
-			LOGGER.info("Record retrieved Sucessfully", kv("HttpStatus Code", HttpStatus.OK.value()));
+			LOGGER.info("Record retrieved Sucessfully", kv("HttpStatusCode", HttpStatus.OK.value()));
 			return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
 		} else {
-			LOGGER.error("Record not found", kv("HttpStatus Code", HttpStatus.NOT_FOUND.value()));
+			LOGGER.error("Record not found", kv("HttpStatusCode", HttpStatus.NOT_FOUND.value()));
+			LOGGER.info("given id {} is not found", kv("id", id));
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
@@ -90,8 +91,9 @@ public class TutorialController {
 		try {
 			
 			Tutorial _tutorial = tutorialRepository
-					.save(new Tutorial(tutorial.getTitle(), tutorial.getDescription(), false));
-			LOGGER.info("Record created Sucessfully", kv("HttpStatus Code", HttpStatus.CREATED.value()));
+					.save(new Tutorial(tutorial.getTitle(), tutorial.getDescription(), false, tutorial.getAuthor(), tutorial.getCountry()));
+					LOGGER.info("Author from {}", kv("country", tutorial.getCountry()));
+			LOGGER.info("Record created Sucessfully", kv("HttpStatusCode", HttpStatus.CREATED.value()));
 			return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -107,6 +109,8 @@ public class TutorialController {
 			_tutorial.setTitle(tutorial.getTitle());
 			_tutorial.setDescription(tutorial.getDescription());
 			_tutorial.setPublished(tutorial.isPublished());
+			_tutorial.setAuthor(tutorial.getAuthor());
+			_tutorial.setCountry(tutorial.getCountry());
 			return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
