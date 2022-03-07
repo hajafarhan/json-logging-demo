@@ -93,6 +93,7 @@ public class TutorialController {
 			Tutorial _tutorial = tutorialRepository
 					.save(new Tutorial(tutorial.getTitle(), tutorial.getDescription(), false, tutorial.getAuthor(), tutorial.getCountry()));
 					LOGGER.info("Author from {}", kv("country", tutorial.getCountry()));
+
 			LOGGER.info("Record created Sucessfully", kv("HttpStatusCode", HttpStatus.CREATED.value()));
 			return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
 		} catch (Exception e) {
