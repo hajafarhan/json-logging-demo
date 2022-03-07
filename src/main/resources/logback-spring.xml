@@ -1,16 +1,20 @@
 <configuration>
+    <property name="LOG_FILE" value="${LOG_FILE}"/>   
+    <property name="LOG_PATH" value="${LOG_PATH}"/> 
+   
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
       <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
+
     <logger name="jsonLogger" additivity="false" level="DEBUG">
       <appender-ref ref="consoleAppender"/>
     </logger>
     <appender name="fileout"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>./logs/application.log</File>
+        <File>${LOG_PATH}${LOG_FILE}</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <maxIndex>8</maxIndex>
-            <FileNamePattern>./logs/application.log.%i
+            <FileNamePattern>${LOG_PATH}${LOG_FILE}.%i
             </FileNamePattern>
         </rollingPolicy>
         <triggeringPolicy
