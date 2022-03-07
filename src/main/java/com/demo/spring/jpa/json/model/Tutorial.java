@@ -19,14 +19,22 @@ public class Tutorial {
 	@Column(name = "published")
 	private boolean published;
 
+	@Column(name = "author")
+	private String author;
+
+	@Column(name = "country")
+	private String country;
+
 	public Tutorial() {
 
 	}
 
-	public Tutorial(String title, String description, boolean published) {
+	public Tutorial(String title, String description, boolean published, String author, String country) {
 		this.title = title;
 		this.description = description;
 		this.published = published;
+		this.author = author;
+		this.country = country;
 	}
 
 	public long getId() {
@@ -57,9 +65,25 @@ public class Tutorial {
 		this.published = isPublished;
 	}
 
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
 	@Override
 	public String toString() {
-		return "Tutorial [id=" + id + ", title=" + title + ", desc=" + description + ", published=" + published + "]";
+		return "Tutorial [id=" + id + ", title=" + title + ", desc=" + description + ", published=" + published + ", author=" + author + ",country=" +country + "]";
 	}
 
 }
