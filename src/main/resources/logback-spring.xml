@@ -5,8 +5,7 @@
     <logger name="jsonLogger" additivity="false" level="DEBUG">
       <appender-ref ref="consoleAppender"/>
     </logger>
-    <appender name="fileout"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="fileout" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>./logs/application.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <maxIndex>8</maxIndex>
